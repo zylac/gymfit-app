@@ -8,12 +8,13 @@
                     "aptPackages": ["php8.3-mysql", "php8.3-mbstring", "php8.3-xml", "php8.3-curl", "php8.3-gd", "php8.3-zip", "php8.3-bcmath"]
                 }
             }
-        }
+        },
+        "command": "sh ./railway/init-app.sh"
     },
     "deploy": {
         "numReplicas": 1,
         "restartPolicyType": "ON_FAILURE",
-        "healthcheckPath": "/",
+        "healthcheckPath": "/login",
         "healthcheckTimeout": 300
     }
 }

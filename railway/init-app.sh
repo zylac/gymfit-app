@@ -1,9 +1,7 @@
 #!/bin/bash
+set -e
 
 echo "🚀 GymFit - Railway Startup Script"
-
-echo "📦 Running migrations..."
-php artisan migrate --force
 
 echo "🔧 Caching config..."
 php artisan config:cache
@@ -14,7 +12,12 @@ php artisan route:cache
 echo "🎨 Caching views..."
 php artisan view:cache
 
-echo "🔗 Creating storage link..."
-php artisan storage:link
+echo "📢 Caching events..."
+php artisan event:cache
+
+echo "📦 Running migrations..."
+php artisan migrate --force
 
 echo "✅ GymFit deployment complete!"
+
+exec "$@"
