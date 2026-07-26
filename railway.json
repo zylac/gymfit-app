@@ -1,0 +1,19 @@
+{
+    "$schema": "https://railway.app/railway.schema.json",
+    "build": {
+        "builder": "NIXPACKS",
+        "nixpacksConfig": {
+            "phases": {
+                "install": {
+                    "aptPackages": ["php8.2-mysql", "php8.2-mbstring", "php8.2-xml", "php8.2-curl", "php8.2-gd", "php8.2-zip", "php8.2-bcmath"]
+                }
+            }
+        }
+    },
+    "deploy": {
+        "numReplicas": 1,
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckPath": "/",
+        "healthcheckTimeout": 300
+    }
+}

@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center px-6 py-3 rounded-xl font-bold text-sm text-white transition-all duration-200;
+        background: linear-gradient(135deg, #F59E0B, #D97706);
+        box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+    }
+    .btn-primary:hover {
+        box-shadow: 0 6px 24px rgba(245, 158, 11, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        @apply inline-flex items-center px-6 py-3 rounded-xl font-semibold text-sm text-slate-700 transition-all duration-200;
+        background: #F1F5F9;
+        border: 1px solid #E2E8F0;
+    }
+    .btn-secondary:hover {
+        background: #E2E8F0;
+    }
+
+    .btn-danger {
+        @apply inline-flex items-center px-6 py-3 rounded-xl font-bold text-sm text-white transition-all duration-200;
+        background: linear-gradient(135deg, #EF4444, #DC2626);
+        box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+    }
+    .btn-danger:hover {
+        box-shadow: 0 6px 24px rgba(239, 68, 68, 0.45);
+        transform: translateY(-1px);
+    }
+
+    .card {
+        @apply bg-white rounded-2xl border transition-all duration-200;
+        border-color: #E2E8F0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+    .card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
+        border-color: #CBD5E1;
+    }
+
+    .card-highlight {
+        border-color: #FDE68A;
+        box-shadow: 0 0 0 1px #FDE68A, 0 4px 12px rgba(245, 158, 11, 0.08);
+    }
+
+    .badge {
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold;
+    }
+    .badge-amber { background: #FEF3C7; color: #92400E; }
+    .badge-green { background: #D1FAE5; color: #065F46; }
+    .badge-red { background: #FEE2E2; color: #991B1B; }
+    .badge-blue { background: #DBEAFE; color: #1E40AF; }
+    .badge-gray { background: #F1F5F9; color: #475569; }
+    .badge-slate { background: #F1F5F9; color: #475569; }
+
+    .section-title {
+        @apply text-xs font-bold tracking-widest uppercase;
+        color: #F59E0B;
+    }
+
+    .gradient-amber {
+        background: linear-gradient(135deg, #F59E0B, #D97706);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .input-field {
+        @apply block w-full rounded-xl px-4 py-3 text-sm text-slate-800 placeholder-slate-400 font-medium transition-all duration-200;
+        background: #F8FAFC;
+        border: 1.5px solid #E2E8F0;
+    }
+    .input-field:focus {
+        outline: none;
+        border-color: #F59E0B;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        background: #FFFFFF;
+    }
+}
