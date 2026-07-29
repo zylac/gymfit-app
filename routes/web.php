@@ -56,6 +56,8 @@ Route::get('/wasmer/migrate/{token}', function ($token) use ($wasmerToken) {
 
 // Route untuk serve storage files (workaround karena Wasmer gak support symlink)
 Route::get('/storage/{path}', function ($path) {
+    // Proteksi path traversal
+    $path = str_replace(['..', './'], '', $path);
     $fullPath = storage_path('app/public/' . $path);
     return file_exists($fullPath) ? response()->file($fullPath) : abort(404);
 })->where('path', '.*');
