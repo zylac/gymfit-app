@@ -1,0 +1,4 @@
+capabilities:
+  instaboot:
+    requests:
+      - path: /
