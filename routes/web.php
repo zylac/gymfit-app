@@ -25,47 +25,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
 
-// =============================================
-// 🚀 Wasmer Deployment Helpers (HAPUS setelah deploy stabil!)
-// =============================================
-
-use Illuminate\Support\Facades\Artisan;
-
-$wasmerToken = fn ($token) => $token === 'gymfit-secret-' . md5(config('app.key'));
-
-// Route untuk liat token saat ini (panggil setelah deploy!)
-Route::get('/wasmer/token', function () {
-    return 'gymfit-secret-' . md5(config('app.key'));
-})->middleware('throttle:5,1');
-
-// Route untuk menjalankan scheduler (dipanggil oleh cron-job.org atau EasyCron)
-Route::get('/wasmer/scheduler/{token}', function ($token) use ($wasmerToken) {
-    abort_unless($wasmerToken($token), 403);
-    Artisan::call('schedule:run');
-    return response()->json(['status' => 'ok', 'message' => 'Scheduler executed']);
-})->middleware('throttle:6,1');
-
-// Route untuk menjalankan optimize (cache config, route, view)
-Route::get('/wasmer/optimize/{token}', function ($token) use ($wasmerToken) {
-    abort_unless($wasmerToken($token), 403);
-    Artisan::call('optimize', ['--force' => true]);
-    return response()->json(['status' => 'ok', 'message' => 'Optimization completed']);
-})->middleware('throttle:3,5');
-
-// Route untuk menjalankan migration (panggil sekali setelah deploy!)
-Route::get('/wasmer/migrate/{token}', function ($token) use ($wasmerToken) {
-    abort_unless($wasmerToken($token), 403);
-    Artisan::call('migrate', ['--force' => true]);
-    return response()->json(['status' => 'ok', 'message' => 'Migration completed']);
-})->middleware('throttle:3,10');
-
-// Route untuk serve storage files (workaround karena Wasmer gak support symlink)
-Route::get('/storage/{path}', function ($path) {
-    // Proteksi path traversal
-    $path = str_replace(['..', './', '../'], '', $path);
-    $fullPath = storage_path('app/public/' . $path);
-    return file_exists($fullPath) ? response()->file($fullPath) : abort(404);
-})->where('path', '.*');
-
 require __DIR__.'/auth.php';
 
