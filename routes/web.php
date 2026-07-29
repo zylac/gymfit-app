@@ -30,9 +30,21 @@ Route::middleware('auth')->group(function () {
 // =============================================
 
 // Route untuk menjalankan scheduler (dipanggil oleh cron-job.org atau EasyCron)
-Route::get('/wasmer/scheduler', function () {
+Route::get('/wasmer/scheduler/{token}', function ($token) {
+    if ($token !== 'gymfit-secret-' . md5(config('app.key'))) {
+        abort(403);
+    }
     \Illuminate\Support\Facades\Artisan::call('schedule:run');
     return response()->json(['status' => 'ok', 'message' => 'Scheduler executed']);
+});
+
+// Route untuk menjalankan optimize (cache config, route, view)
+Route::get('/wasmer/optimize/{token}', function ($token) {
+    if ($token !== 'gymfit-secret-' . md5(config('app.key'))) {
+        abort(403);
+    }
+    \Illuminate\Support\Facades\Artisan::call('optimize', ['--force' => true]);
+    return response()->json(['status' => 'ok', 'message' => 'Optimization completed']);
 });
 
 // Route untuk menjalankan migration (panggil sekali setelah deploy!)
