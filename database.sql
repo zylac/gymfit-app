@@ -5,6 +5,14 @@
 -- Generated: July 29, 2026
 -- ========================================
 
+-- 0. MIGRATIONS TABLE
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- 1. USERS & AUTH
 CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -224,9 +232,9 @@ INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VAL
 -- Hash: $2y$12$... (bcrypt)
 -- ========================================
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `phone`, `membership_plan_id`, `membership_expires_at`, `created_at`, `updated_at`) VALUES
-(1, 'Admin GymFit', 'admin@gymfit.com', NOW(), '$2y$12$LHRsPveNmJHRZITjoEjk.O1cpHGvXOmRZLSVqL1OAPOGFYGSA5OWe', NULL, NULL, NULL, NULL, NOW(), NOW()),
-(2, 'Trainer Agung', 'trainer@gymfit.com', NOW(), '$2y$12$LHRsPveNmJHRZITjoEjk.O1cpHGvXOmRZLSVqL1OAPOGFYGSA5OWe', NULL, NULL, NULL, NULL, NOW(), NOW()),
-(3, 'Agung Student', 'agung@student.com', NOW(), '$2y$12$LHRsPveNmJHRZITjoEjk.O1cpHGvXOmRZLSVqL1OAPOGFYGSA5OWe', NULL, NULL, NULL, NULL, NOW(), NOW());
+(1, 'Admin GymFit', 'admin@gymfit.com', NOW(), '$2y$10$DnGBNVW0MwF/Kqx6HnhQZuDgEW3D2r9eUVmTacy0Hs.Ygy3oQI8tq', NULL, NULL, NULL, NULL, NOW(), NOW()),
+(2, 'Trainer Agung', 'trainer@gymfit.com', NOW(), '$2y$10$DnGBNVW0MwF/Kqx6HnhQZuDgEW3D2r9eUVmTacy0Hs.Ygy3oQI8tq', NULL, NULL, NULL, NULL, NOW(), NOW()),
+(3, 'Agung Student', 'agung@student.com', NOW(), '$2y$10$DnGBNVW0MwF/Kqx6HnhQZuDgEW3D2r9eUVmTacy0Hs.Ygy3oQI8tq', NULL, NULL, NULL, NULL, NOW(), NOW());
 
 -- ========================================
 -- SEED DATA - MODEL HAS ROLES
