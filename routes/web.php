@@ -25,5 +25,33 @@ Route::middleware('auth')->group(function () {
     Route::delete('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
 
+// =============================================
+// 🚀 Wasmer Deployment Helpers (HAPUS setelah deploy stabil!)
+// =============================================
+
+// Route untuk menjalankan scheduler (dipanggil oleh cron-job.org atau EasyCron)
+Route::get('/wasmer/scheduler', function () {
+    \Illuminate\Support\Facades\Artisan::call('schedule:run');
+    return response()->json(['status' => 'ok', 'message' => 'Scheduler executed']);
+});
+
+// Route untuk menjalankan migration (panggil sekali setelah deploy!)
+Route::get('/wasmer/migrate/{token}', function ($token) {
+    if ($token !== 'gymfit-secret-' . md5(config('app.key'))) {
+        abort(403);
+    }
+    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    return response()->json(['status' => 'ok', 'message' => 'Migration completed']);
+});
+
+// Route untuk serve storage files (workaround karena Wasmer gak support symlink)
+Route::get('/storage/{path}', function ($path) {
+    $fullPath = storage_path('app/public/' . $path);
+    if (!file_exists($fullPath)) {
+        abort(404);
+    }
+    return response()->file($fullPath);
+})->where('path', '.*');
+
 require __DIR__.'/auth.php';
 
