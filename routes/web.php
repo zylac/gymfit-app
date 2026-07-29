@@ -29,40 +29,35 @@ Route::middleware('auth')->group(function () {
 // 🚀 Wasmer Deployment Helpers (HAPUS setelah deploy stabil!)
 // =============================================
 
+use Illuminate\Support\Facades\Artisan;
+
+$wasmerToken = fn ($token) => $token === 'gymfit-secret-' . md5(config('app.key'));
+
 // Route untuk menjalankan scheduler (dipanggil oleh cron-job.org atau EasyCron)
-Route::get('/wasmer/scheduler/{token}', function ($token) {
-    if ($token !== 'gymfit-secret-' . md5(config('app.key'))) {
-        abort(403);
-    }
-    \Illuminate\Support\Facades\Artisan::call('schedule:run');
+Route::get('/wasmer/scheduler/{token}', function ($token) use ($wasmerToken) {
+    abort_unless($wasmerToken($token), 403);
+    Artisan::call('schedule:run');
     return response()->json(['status' => 'ok', 'message' => 'Scheduler executed']);
 });
 
 // Route untuk menjalankan optimize (cache config, route, view)
-Route::get('/wasmer/optimize/{token}', function ($token) {
-    if ($token !== 'gymfit-secret-' . md5(config('app.key'))) {
-        abort(403);
-    }
-    \Illuminate\Support\Facades\Artisan::call('optimize', ['--force' => true]);
+Route::get('/wasmer/optimize/{token}', function ($token) use ($wasmerToken) {
+    abort_unless($wasmerToken($token), 403);
+    Artisan::call('optimize', ['--force' => true]);
     return response()->json(['status' => 'ok', 'message' => 'Optimization completed']);
 });
 
 // Route untuk menjalankan migration (panggil sekali setelah deploy!)
-Route::get('/wasmer/migrate/{token}', function ($token) {
-    if ($token !== 'gymfit-secret-' . md5(config('app.key'))) {
-        abort(403);
-    }
-    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+Route::get('/wasmer/migrate/{token}', function ($token) use ($wasmerToken) {
+    abort_unless($wasmerToken($token), 403);
+    Artisan::call('migrate', ['--force' => true]);
     return response()->json(['status' => 'ok', 'message' => 'Migration completed']);
 });
 
 // Route untuk serve storage files (workaround karena Wasmer gak support symlink)
 Route::get('/storage/{path}', function ($path) {
     $fullPath = storage_path('app/public/' . $path);
-    if (!file_exists($fullPath)) {
-        abort(404);
-    }
-    return response()->file($fullPath);
+    return file_exists($fullPath) ? response()->file($fullPath) : abort(404);
 })->where('path', '.*');
 
 require __DIR__.'/auth.php';
