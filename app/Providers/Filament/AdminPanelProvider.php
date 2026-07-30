@@ -29,7 +29,11 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->colors([
                 'primary' => Color::Amber,
+                'gray' => Color::Slate,
+                'danger' => Color::Rose,
+                'success' => Color::Emerald,
             ])
+            ->brandName('GymFit')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -38,7 +42,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -53,6 +56,16 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->renderHook('panels::head.end', fn () => '<style>
+.fi-filament-info-widget { display: none !important; }
+.fi-sidebar { background: #1E293B !important; }
+.fi-sidebar-header { background: #0F172A !important; }
+.fi-topbar { background: #FFFFFF !important; border-bottom: 1px solid #E2E8F0 !important; }
+.fi-body { background: #F8F7F4 !important; }
+.fi-logo { color: #F59E0B !important; }
+.fi-btn, .fi-dropdown-list-item { border-radius: 0.75rem !important; }
+input, select, textarea { border-radius: 0.75rem !important; }
+</style>');
     }
 }

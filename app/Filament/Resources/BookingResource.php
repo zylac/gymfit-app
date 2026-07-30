@@ -8,6 +8,7 @@ use App\Models\Booking;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use App\Services\PaymentVerificationService;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -108,8 +109,13 @@ class BookingResource extends Resource
                     ->color('success')
                     ->icon('heroicon-o-check-circle')
                     ->requiresConfirmation()
-                    ->action(function (Booking $record) {
-                        $record->update(['status' => 'APPROVED']);
+                    ->action(function (Booking $record, PaymentVerificationService $service) {
+                        $payment = $record->payment;
+                        if ($payment && $payment->status === 'PENDING') {
+                            $service->verifyPayment($payment->id, auth()->id());
+                        } else {
+                            $record->update(['status' => 'APPROVED']);
+                        }
                     })
                     ->visible(fn (Booking $record): bool => $record->status === 'AWAITING_VERIFICATION'),
                 Tables\Actions\Action::make('Reject')

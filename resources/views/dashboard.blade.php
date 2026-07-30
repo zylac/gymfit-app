@@ -99,7 +99,7 @@
                         <p class="text-xs font-bold tracking-widest text-amber-600 uppercase">Next Session</p>
                     </div>
                     <p class="font-bold text-slate-800">with {{ $nextSession->pt?->name ?? 'TBD' }}</p>
-                    <p class="text-sm text-slate-500">{{ \\Carbon\\Carbon::parse($nextSession->schedule_time)->format('l, d F Y \\a\\t H:i') }}</p>
+                    <p class="text-sm text-slate-500">{{ \Carbon\Carbon::parse($nextSession->schedule_time)->format('l, d F Y \a\t H:i') }}</p>
                 </div>
             </div>
             <span class="badge badge-green">CONFIRMED ✓</span>
@@ -140,8 +140,8 @@
                         @forelse(Auth::user()->memberBookings()->with(['pt','membershipPlan','payment'])->latest()->get() as $booking)
                         <tr class="hover:bg-slate-50 transition-colors duration-100">
                             <td class="px-6 py-4">
-                                <p class="text-sm font-semibold text-slate-800">{{ \\Carbon\\Carbon::parse($booking->schedule_time)->format('d M Y') }}</p>
-                                <p class="text-xs text-slate-400">{{ \\Carbon\\Carbon::parse($booking->schedule_time)->format('H:i') }}</p>
+                                <p class="text-sm font-semibold text-slate-800">{{ \Carbon\Carbon::parse($booking->schedule_time)->format('d M Y') }}</p>
+                                <p class="text-xs text-slate-400">{{ \Carbon\Carbon::parse($booking->schedule_time)->format('H:i') }}</p>
                             </td>
                             <td class="px-6 py-4 text-sm text-slate-600">{{ $booking->pt?->name ?? '—' }}</td>
                             <td class="px-6 py-4 text-sm text-slate-600">{{ $booking->membershipPlan?->name ?? '—' }}</td>

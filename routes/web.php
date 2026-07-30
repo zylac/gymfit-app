@@ -9,6 +9,9 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    if (auth()->user()->hasAnyRole(['Admin', 'PT'])) {
+        return redirect('/admin');
+    }
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

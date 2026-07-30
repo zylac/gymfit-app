@@ -1,0 +1,16 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ /public/$1 [L]
+
+RewriteRule ^storage/(.*)$ /public/storage/$1 [L]
+
+<FilesMatch "\.(env|env\.example|env\.wasmer|md|gitignore|lock)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^(artisan|composer\.(json|lock|phar)|package\.json|vite\.config\.js|tailwind\.config\.js|postcss\.config\.js)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
